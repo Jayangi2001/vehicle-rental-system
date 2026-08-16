@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  data:
+    mongodb:
+     
+      uri: mongodb://localhost:27017/userdb
+
+
+jwt:
+  secret: "ChangeThisToALongRandomSecretKeyForJWTSigning123456"
+  expiration-ms: 3600000  
+
+
+services:
+  vehicle-service:
+    url: http://localhost:8082
+  rental-payment-service:
+    url: http://localhost:8083
+
+
+rate-limit:
+  capacity: 20        
+  refill-tokens: 20   
+  refill-duration-seconds: 60   
+
+cors:
+  allowed-origins: "http://localhost:3000,http://localhost:8081"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
