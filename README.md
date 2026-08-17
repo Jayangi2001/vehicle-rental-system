@@ -105,3 +105,203 @@ headers.
 | `services.rental-payment-service.url` | `http://rental-payment-service:8083` | Gateway routing target |
 | `jwt.secret` | *(set in application.yml)* | JWT signing key |
 | `jwt.expiration-ms` | `3600000` | Token validity (1 hour) |
+
+
+---
+
+## 👤 Rental & Payment Service
+
+- **Owner:** S.M.K.S. De Silva (ITBIN-2313-0020)
+
+The **Rental & Payment Service** is a microservice of the Vehicle Rental Management System responsible for managing vehicle rentals and processing customer payments. It provides RESTful APIs for creating rental records, retrieving rental details, processing payments, and viewing payment history.
+
+### Technologies Used
+
+- Java 21
+- Spring Boot 4.0.7
+- Spring Web MVC
+- Spring Data MongoDB
+- MongoDB
+- Spring Security
+- SpringDoc OpenAPI / Swagger
+- Maven
+- Lombok
+- Docker
+
+### Service Configuration
+
+- **Service Name:** Rental Payment Service
+- **Port:** 8083
+- **Database:** MongoDB
+- **Database Name:** `vehicle_rental_db`
+- **Authentication:** API Key (`X-API-KEY`)
+
+### Main Responsibilities
+
+The service provides the following main functionalities:
+
+1. **Vehicle Rental Management**
+   - Create a new vehicle rental.
+   - Store customer, vehicle, rental dates, and total rental amount.
+   - Maintain rental status such as `PENDING`, `CONFIRMED`, `ONGOING`, `COMPLETED`, and `CANCELLED`.
+   - Retrieve rental details using the rental ID.
+
+2. **Payment Management**
+   - Process payments related to vehicle rentals.
+   - Store payment information including rental ID, user ID, amount, payment method, and payment status.
+   - Support payment methods such as `CARD`, `CASH`, and `ONLINE`.
+   - Maintain payment statuses such as `SUCCESS`, `FAILED`, and `PENDING`.
+   - Retrieve payment history for a specific user.
+
+### API Endpoints
+
+#### Rental Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/rentals` | Create a new vehicle rental |
+| GET | `/rentals/{id}` | Retrieve rental details by ID |
+
+#### Payment Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/payments/process` | Process a rental payment |
+| GET | `/payments/history/{userId}` | Retrieve payment history of a user |
+
+### Payment Request Example
+
+```json
+{
+  "rentalId": "rental123",
+  "userId": "user123",
+  "amount": 15000.00,
+  "paymentMethod": "CARD"
+}
+```
+
+### Payment Response Example
+
+```json
+{
+  "id": "payment123",
+  "rentalId": "rental123",
+  "userId": "user123",
+  "amount": 15000.00,
+  "paymentMethod": "CARD",
+  "paymentStatus": "SUCCESS",
+  "paymentDate": "2026-08-17T10:30:00"
+}
+```
+
+### Rental Request Example
+
+```json
+{
+  "userId": "user123",
+  "vehicleId": "vehicle456",
+  "startDate": "2026-08-20T09:00:00",
+  "endDate": "2026-08-22T18:00:00",
+  "totalAmount": 25000.00
+}
+```
+
+### Security
+
+The service uses **API Key authentication** to protect its REST API endpoints. Clients must provide a valid API key through the `X-API-KEY` request header.
+
+Example:
+
+```text
+X-API-KEY: RENTAL-PAYMENT-SECRET-KEY-2026
+```
+
+Requests without a valid API key receive a `401 Unauthorized` response.
+
+Swagger UI and API documentation endpoints are excluded from API key authentication to allow developers to explore and test the API.
+
+### Database
+
+MongoDB is used as the database for storing rental and payment information.
+
+The service uses the following main collections:
+
+- `rentals` – Stores vehicle rental information.
+- `payments` – Stores payment transaction information.
+
+### Project Structure
+
+```text
+rental-payment-service/
+├── src/
+│   ├── main/
+│   │   ├── java/com/vehicle/rentalpayment/
+│   │   │   ├── config/
+│   │   │   ├── controller/
+│   │   │   ├── dto/
+│   │   │   ├── model/
+│   │   │   ├── repository/
+│   │   │   ├── security/
+│   │   │   └── service/
+│   │   └── resources/
+│   │       └── application.properties
+│   └── test/
+├── Dockerfile
+├── pom.xml
+└── mvnw
+```
+
+### API Documentation
+
+The service uses **SpringDoc OpenAPI** to provide interactive API documentation.
+
+Swagger UI:
+
+```text
+http://localhost:8083/swagger-ui.html
+```
+
+OpenAPI documentation:
+
+```text
+http://localhost:8083/api-docs
+```
+
+### Running the Service
+
+Make sure MongoDB is running on port `27017`.
+
+Navigate to the `rental-payment-service` directory and run:
+
+```bash
+./mvnw spring-boot:run
+```
+
+For Windows:
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+The service will start on:
+
+```text
+http://localhost:8083
+```
+
+### Docker Support
+
+The service includes a Dockerfile and can be containerized as part of the Vehicle Rental Management System.
+
+The service communicates with MongoDB and other system components through the configured microservice architecture.
+
+### Key Benefits
+
+- Provides a separate and independently deployable rental and payment service.
+- Uses RESTful APIs for communication with other services.
+- Stores rental and payment data using MongoDB.
+- Secures API access using API Key authentication.
+- Provides Swagger/OpenAPI documentation for easy API testing.
+- Supports Docker-based deployment.
+- Separates rental and payment responsibilities from other vehicle rental system components.
+
