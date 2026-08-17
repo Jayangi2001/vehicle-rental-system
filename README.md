@@ -1,7 +1,7 @@
 ## 👤 User Service (Gateway + Authentication)
 
--**Owner:** H.C Jayangi (ITBIN-2313-0125)
--**Role:** Gateway Lead — Authentication, API Gateway routing, CORS, Rate Limiting
+- **Owner:** H.C Jayangi (ITBIN-2313-0125)
+- **Role:** Gateway Lead — Authentication, API Gateway routing, CORS, Rate Limiting
 
 ### Overview
 The User Service handles account registration, login, and JWT token issuance. It also
