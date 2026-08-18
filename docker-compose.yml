@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - rental-net
+
+  vehicle-service:
+    build: ./vehicle-service
+    container_name: vehicle-service
+    ports:
+      - "8082:8082"
+    networks:
+      - rental-net
+
+  rental-payment-service:
+    build: ./rental-payment-service
+    container_name: rental-payment-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_MONGODB_HOST=mongo
+    depends_on:
+      - mongo
+    networks:
+      - rental-net
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/userdb
+      - SERVICES_VEHICLE_SERVICE_URL=http://vehicle-service:8082
+      - SERVICES_RENTAL_PAYMENT_SERVICE_URL=http://rental-payment-service:8083
+    depends_on:
+      - mongo
+      - vehicle-service
+      - rental-payment-service
+    networks:
+      - rental-net
+
+  client-app:
+    build: ./client-app
+    container_name: client-app
+    ports:
+      - "3000:80"
+    depends_on:
+      - user-service
+    networks:
+      - rental-net
+
+networks:
+  rental-net:
+    driver: bridge 

@@ -7,7 +7,7 @@ spring:
   data:
     mongodb:
      
-      uri: mongodb://localhost:27017/userdb
+       uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/userdb}
 
 
 jwt:
@@ -17,10 +17,10 @@ jwt:
 
 services:
   vehicle-service:
-    url: http://localhost:8082
+    url: ${SERVICES_VEHICLE_SERVICE_URL:http://localhost:8082}
     api-key: VEHICLE_SERVICE_SECRET_KEY_123
   rental-payment-service:
-    url: http://localhost:8083
+    url: ${SERVICES_RENTAL_PAYMENT_SERVICE_URL:http://localhost:8083}
     api-key: RENTAL-PAYMENT-SECRET-KEY-2026
 
 
@@ -30,7 +30,7 @@ rate-limit:
   refill-duration-seconds: 60   
 
 cors:
-  allowed-origins: "http://localhost:3000,http://localhost:8081"
+  allowed-origins: "http://localhost:3000,http://localhost:5173,http://localhost:8081"
 
 springdoc:
   swagger-ui:
