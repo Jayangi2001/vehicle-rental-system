@@ -312,6 +312,191 @@ headers.
 
 
 ---
+# 👤 Vehicle Management Service
+
+* **Owner:** Dilshara Dissanayake (ITBIN-2313-0030)
+
+The **Vehicle Management Service** is a core microservice of the Vehicle Rental Management System responsible for managing the entire lifecycle of vehicles in the system inventory. It provides RESTful APIs for adding new vehicles, fetching vehicle lists, retrieving specific vehicle details, updating existing vehicle records, and deleting vehicles from the inventory.
+
+## Technologies Used
+
+* Java 21
+* Spring Boot 3.x
+* Spring Web MVC
+* Spring Data MongoDB
+* MongoDB
+* Spring Security
+* SpringDoc OpenAPI / Swagger
+* Maven
+* Lombok
+* Docker
+
+## Service Configuration
+
+| Configuration      | Details                    |
+| ------------------ | -------------------------- |
+| **Service Name**   | Vehicle Management Service |
+| **Port**           | 8082                       |
+| **Database**       | MongoDB                    |
+| **Database Name**  | `vehicle_rental_db`        |
+| **Authentication** | API Key (`X-API-KEY`)      |
+
+## Main Responsibilities
+
+### 1. Vehicle Inventory Management
+
+* Register and store new vehicles in the inventory.
+* Maintain vehicle attributes such as brand, model, license plate, category type, price per day, and availability status.
+* Retrieve the complete vehicle inventory or specific vehicle details by ID.
+* Update existing vehicle information and manage rental availability (`true`/`false`).
+* Remove vehicles from the database inventory when decommissioned.
+
+### 2. Security & Validation
+
+* Secure endpoints using API Key header validation (`X-API-KEY`).
+* Enforce appropriate HTTP response status codes:
+
+  * `201 Created`
+  * `204 No Content`
+  * `400 Bad Request`
+  * `404 Not Found`
+  * `401 Unauthorized`
+
+## API Endpoints
+
+| Method   | Endpoint             | Description                                 |
+| -------- | -------------------- | ------------------------------------------- |
+| `GET`    | `/api/vehicles`      | Fetch all vehicles in the inventory         |
+| `GET`    | `/api/vehicles/{id}` | Fetch specific vehicle details by ID        |
+| `POST`   | `/api/vehicles`      | Add a new vehicle to the database inventory |
+| `PUT`    | `/api/vehicles/{id}` | Update existing vehicle details by ID       |
+| `DELETE` | `/api/vehicles/{id}` | Delete a vehicle record by ID               |
+
+## Vehicle Creation Request Example
+
+```json
+{
+  "brand": "Toyota",
+  "model": "Axio",
+  "licensePlate": "WP CAD-1234",
+  "type": "CAR",
+  "pricePerDay": 12000.00,
+  "isAvailable": true
+}
+```
+
+## Vehicle Response Example
+
+```json
+{
+  "id": "66c1f8a2b13e8d241c8f1234",
+  "brand": "Toyota",
+  "model": "Axio",
+  "licensePlate": "WP CAD-1234",
+  "type": "CAR",
+  "pricePerDay": 12000.00,
+  "isAvailable": true
+}
+```
+
+## Security
+
+The service uses **API Key authentication** to protect its REST API endpoints. Clients must provide a valid API key through the `X-API-KEY` request header.
+
+Example:
+
+```text
+X-API-KEY: VEHICLE-SERVICE-SECRET-KEY-2026
+```
+
+Requests without a valid API key receive a `401 Unauthorized` response.
+
+Swagger UI and API documentation endpoints are excluded from API key authentication to allow developers to explore and test the API.
+
+## Database
+
+MongoDB is used as the database for storing vehicle inventory records.
+
+### Main Collection
+
+* `vehicles` – Stores vehicle information and availability status.
+
+## Project Structure
+
+```text
+vehicle-service/
+├── src/
+│   ├── main/
+│   │   ├── java/com/vehicle/management/
+│   │   │   ├── config/
+│   │   │   ├── controller/
+│   │   │   ├── dto/
+│   │   │   ├── model/
+│   │   │   ├── repository/
+│   │   │   ├── security/
+│   │   │   └── service/
+│   │   └── resources/
+│   │       └── application.properties
+│   └── test/
+├── Dockerfile
+├── pom.xml
+└── mvnw
+```
+
+## API Documentation
+
+The service uses **SpringDoc OpenAPI** to provide interactive API documentation.
+
+### Swagger UI
+
+```text
+http://localhost:8082/swagger-ui.html
+```
+
+### OpenAPI Documentation
+
+```text
+http://localhost:8082/v3/api-docs
+```
+
+## Running the Service
+
+Make sure MongoDB is running on port `27017`.
+
+Navigate to the `vehicle-service` directory and run:
+
+### Linux / macOS
+
+```bash
+./mvnw spring-boot:run
+```
+
+### Windows
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+The service will start on:
+
+```text
+http://localhost:8082
+```
+
+## Docker Support
+
+The service includes a `Dockerfile` and can be containerized as part of the Vehicle Rental Management System.
+
+The service communicates with MongoDB and other system components through the configured microservice architecture.
+
+## Key Benefits
+
+* Provides an independent microservice dedicated solely to vehicle fleet management.
+* Uses RESTful APIs for seamless integration with the Gateway and other microservices.
+* Provides flexible schema design using MongoDB.
+* Secures API access using API Key header validation.
+* Provides interactive Swagger/OpenAPI documentation for API testing.
+* Supports containerization using Docker.
 
 ## 👤 Rental & Payment Service
 
