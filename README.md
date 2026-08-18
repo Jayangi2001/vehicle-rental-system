@@ -1,3 +1,207 @@
+# 🚗 Vehicle Rental Management System
+
+## Overview
+
+The **Vehicle Rental Management System** is a microservices-based application developed to manage vehicle rentals efficiently. The system allows users to manage their accounts, browse available vehicles, make rental requests, and handle rental payments.
+
+The application is designed using a **microservices architecture**, where different business functionalities are separated into independent services. This improves scalability, maintainability, and flexibility of the system.
+
+## Microservices
+
+The system consists of the following main services:
+
+### 1. User Service
+
+The User Service is responsible for managing user-related functionalities.
+
+**Main responsibilities:**
+- User registration and login
+- User authentication
+- JWT-based authorization
+- User profile management
+- Secure access to protected resources
+
+### 2. Vehicle Service
+
+The Vehicle Service manages vehicle-related information and operations.
+
+**Main responsibilities:**
+- Add vehicles
+- View available vehicles
+- Update vehicle details
+- Delete vehicles
+- Manage vehicle availability
+- Search and retrieve vehicle information
+
+### 3. Rental & Payment Service
+
+The Rental & Payment Service manages vehicle rental transactions and payments.
+
+**Main responsibilities:**
+- Create vehicle rental records
+- Manage rental information
+- Process rental payments
+- Maintain payment records
+- Retrieve rental and payment history
+- Manage rental and payment statuses
+
+## System Architecture
+
+The system follows a **microservices architecture** where each service operates independently and communicates through RESTful APIs.
+
+```text
+                    ┌─────────────────────┐
+                    │       Client        │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    API Gateway      │
+                    └──────────┬──────────┘
+                               │
+             ┌─────────────────┼─────────────────┐
+             │                 │                 │
+             ▼                 ▼                 ▼
+      ┌─────────────┐   ┌─────────────┐   ┌──────────────────┐
+      │ User Service│   │Vehicle      │   │ Rental & Payment │
+      │             │   │Service      │   │ Service          │
+      └─────────────┘   └─────────────┘   └──────────────────┘
+             │                 │                 │
+             ▼                 ▼                 ▼
+        ┌─────────┐       ┌─────────┐       ┌─────────┐
+        │Database │       │Database │       │Database │
+        └─────────┘       └─────────┘       └─────────┘
+```
+
+## Technologies Used
+
+- **Java**
+- **Spring Boot**
+- **Spring Web**
+- **Spring Data MongoDB**
+- **MongoDB**
+- **Spring Security**
+- **JWT Authentication**
+- **RESTful APIs**
+- **Swagger / OpenAPI**
+- **Maven**
+- **Docker**
+- **Docker Compose**
+- **Git & GitHub**
+
+## Project Structure
+
+```text
+vehicle-rental-system/
+│
+├── rental-payment-service/
+│   └── Rental and Payment Microservice
+│
+├── user-service/
+│   └── User Management Microservice
+│
+├── vehicle-service/
+│   └── Vehicle Management Microservice
+│
+├── Dockerfile
+├── docker-compose.yml
+├── .gitignore
+├── .gitattributes
+└── README.md
+```
+
+## Key Features
+
+- User registration and authentication
+- JWT-based security
+- Vehicle management
+- Vehicle availability management
+- Vehicle rental management
+- Rental payment processing
+- Payment history management
+- RESTful API communication
+- Swagger API documentation
+- MongoDB database integration
+- Docker containerization
+- Independent and scalable microservices
+
+## Security
+
+The system uses **JWT-based authentication** to secure user-related operations and protected API endpoints.
+
+Authentication ensures that only authorized users can access restricted resources and perform operations such as managing vehicles, creating rentals, and accessing protected user information.
+
+The Rental & Payment Service also provides API-level security for its protected operations.
+
+## API Documentation
+
+Each microservice can provide interactive API documentation using **Swagger / OpenAPI**.
+
+Swagger allows developers to:
+
+- View available API endpoints
+- View request and response formats
+- Test REST APIs
+- Understand API operations
+
+## Running the Project
+
+### Prerequisites
+
+Make sure the following are installed:
+
+- Java
+- Maven
+- Docker
+- Docker Compose
+- MongoDB (if running databases locally)
+
+### Run with Docker Compose
+
+Clone the repository and navigate to the project directory:
+
+```bash
+git clone <repository-url>
+cd vehicle-rental-system
+```
+
+Start the services using Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+To stop the services:
+
+```bash
+docker compose down
+```
+
+## Development
+
+Each microservice is maintained as an independent module within the project. Developers can work on individual services without directly affecting the implementation of other services.
+
+The project uses Git and GitHub for version control and collaborative development.
+
+## Project Goal
+
+The main goal of this project is to develop a reliable and scalable **Vehicle Rental Management System** using microservices architecture. The system separates major business functionalities into independent services, making the application easier to develop, test, maintain, and scale.
+
+## Team Contributions
+
+The project is developed collaboratively, with team members responsible for different microservices and system components.
+
+- **User Service** – User management and authentication
+- **Vehicle Service** – Vehicle management and availability
+- **Rental & Payment Service** – Rental and payment management
+- **System Integration** – Docker, service communication, and overall integration
+
+## License
+
+This project is developed for academic purposes as part of an undergraduate software development project.
+
+---
+
 ## 👤 User Service (Gateway + Authentication)
 
 - **Owner:** H.C Jayangi (ITBIN-2313-0125)
@@ -34,7 +238,7 @@ Rental & Payment Service.
    mvn clean spring-boot:run
 ```
 
-3. The service starts on **http://localhost:8080**
+3. The service starts on **http://localhost:8081**
 
 ### Swagger UI
 
