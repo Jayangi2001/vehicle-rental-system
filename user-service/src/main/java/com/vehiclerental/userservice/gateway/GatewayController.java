@@ -21,38 +21,45 @@ public class GatewayController {
 
     @Value("${services.vehicle-service.url}")
     private String vehicleServiceUrl;
+    @Value("${services.vehicle-service.api-key}")
+    private String vehicleApiKey;
 
     @Value("${services.rental-payment-service.url}")
     private String rentalServiceUrl;
+    @Value("${services.rental-payment-service.api-key}")
+    private String rentalApiKey;
 
     @RequestMapping("/vehicles/**")
     public ResponseEntity<?> routeToVehicleService(HttpServletRequest request,
                                                      @RequestBody(required = false) String body) {
-        return forward(vehicleServiceUrl, request, body);
+        String path = request.getRequestURI().replaceFirst("^/vehicles", "/api/vehicles");
+        return forward(vehicleServiceUrl, path, request, body, vehicleApiKey);
     }
 
     @RequestMapping("/rentals/**")
     public ResponseEntity<?> routeToRentalService(HttpServletRequest request,
                                                     @RequestBody(required = false) String body) {
-        return forward(rentalServiceUrl, request, body);
+        return forward(rentalServiceUrl, request.getRequestURI(), request, body, rentalApiKey);
     }
 
     @RequestMapping("/payments/**")
     public ResponseEntity<?> routeToPaymentService(HttpServletRequest request,
                                                      @RequestBody(required = false) String body) {
-        return forward(rentalServiceUrl, request, body);
+        return forward(rentalServiceUrl, request.getRequestURI(), request, body, rentalApiKey);
     }
 
-    private ResponseEntity<?> forward(String targetBaseUrl, HttpServletRequest request, String body) {
-    
-        String targetUrl = targetBaseUrl + request.getRequestURI() +
+    private ResponseEntity<?> forward(String targetBaseUrl, String path,
+                                       HttpServletRequest request, String body, String apiKey) {
+
+        String targetUrl = targetBaseUrl + path +
                 (request.getQueryString() != null ? "?" + request.getQueryString() : "");
 
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
-        
+        headers.set("X-API-KEY", apiKey);
+
         Object email = request.getAttribute("authenticatedEmail");
         if (email != null) {
             headers.set("X-User-Email", email.toString());
@@ -63,7 +70,6 @@ public class GatewayController {
         try {
             return restTemplate.exchange(targetUrl, method, entity, String.class);
         } catch (HttpClientErrorException ex) {
-            
             return ResponseEntity.status(ex.getStatusCode()).body(ex.getResponseBodyAsString());
         }
     }
